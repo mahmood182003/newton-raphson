@@ -6,4 +6,4 @@ g++ -o "executable"
 
 ./executable
 
-gnuplot result_plotter.gp 
+gnuplot plots/result_plotter.gp 
