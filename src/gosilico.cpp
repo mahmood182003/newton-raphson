@@ -189,16 +189,6 @@ bool solveEQ(double c_eq1, double c_eq2, Vec &Q) {
 	return true;
 }
 
-double getAvg(double a[], int n) {
-	if (n < 1) {
-		return 0;
-	}
-	double s = 0;
-	for (int i = 0; i < n; i++)
-		s += a[i];
-	return s / n;
-}
-
 int main() {
 	srand(time(NULL));
 	cout.precision(10);
