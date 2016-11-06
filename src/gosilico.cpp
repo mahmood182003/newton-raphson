@@ -147,9 +147,9 @@ double norm(Vec X) {
 
 bool solveEQ(double c_eq1, double c_eq2, Vec &Q) {
 	Mat J; // Jacobian matrix
-	Vec X = { 0, 0 }, F, Y;
+	Vec X = { Q[0], Q[1] }, F, Y;
 
-	int limit = 500; // max iterations
+	int limit = 50; // max iterations
 	double q1, q2;
 	do {
 		q1 = X[0];
@@ -171,9 +171,10 @@ bool solveEQ(double c_eq1, double c_eq2, Vec &Q) {
 
 		// calculate the equation system JY=-F.
 		if (solve(J, F, Y) != 0 || isinf(F[0]) || isinf(F[1])) {
+			// safety measure in case of bad start point
 			X[0] = RANDX;
 			X[1] = RANDX;
-			//cout << "reset X0=" << X[0] << " X1=" << X[1] << '\n';
+			cout << "reset X0=" << X[0] << " X1=" << X[1] << '\n';
 			continue;
 		}
 		// next step
@@ -197,12 +198,14 @@ int main() {
 	std::ofstream file1("q1.txt"), file2("q2.txt");
 	clock_t begin = clock();
 
-	double max = 10, step1 = 0.0001, step2 = 0.00001;
+	const double max_ceq1 = 0.001, max_ceq2 = 0.0001; // domain intervals
+	const int steps = 30;
+	const double step1 = max_ceq1 / steps, step2 = max_ceq2 / steps;
 	int count = 0;
-	for (double i = 0; i <= max; i += 0.1) {
-		for (double j = 0; j <= max; j += 0.1) {
+	for (int i = 0; i <= steps; ++i) {
+		for (int j = 0; j <= steps; ++j) {
 			c_eq1 = i * step1;
-			c_eq2 = j * step2;
+			c_eq2 = (i % 2) ? (steps - j) * step2 : j * step2; // alternate j direction
 
 			if (solveEQ(c_eq1, c_eq2, Q)) {
 				count++;
