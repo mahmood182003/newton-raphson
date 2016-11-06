@@ -199,7 +199,7 @@ int main() {
 	clock_t begin = clock();
 
 	const double max_ceq1 = 0.001, max_ceq2 = 0.0001; // domain intervals
-	const int steps = 30;
+	const int steps = 60;
 	const double step1 = max_ceq1 / steps, step2 = max_ceq2 / steps;
 	int count = 0;
 	for (int i = 0; i <= steps; ++i) {
@@ -217,8 +217,8 @@ int main() {
 
 	clock_t end = clock();
 	double elapsed = double(end - begin) / (CLOCKS_PER_SEC / 1000);
-	cout << "elapsed: " << elapsed << "ms" << " wrote " << count
-			<< " point pairs (q1,q2)" << '\n';
+	cout << "execution time: " << elapsed << "ms" << ", for " << count
+			<< " pairs (q1,q2)" << '\n';
 
 	return 0;
 }
